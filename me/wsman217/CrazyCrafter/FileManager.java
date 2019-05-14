@@ -39,6 +39,7 @@ public class FileManager {
 			plugin.getDataFolder().mkdirs();
 		}
 		files.clear();
+		
 		customFiles.clear();
 		configurations.clear();
 		//Loads all the normal static files.

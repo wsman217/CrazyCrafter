@@ -32,3 +32,4 @@ public class CrazyCrafter extends JavaPlugin {
 	
 	
 }
+
