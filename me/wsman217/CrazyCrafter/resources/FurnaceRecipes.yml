@@ -1,0 +1,18 @@
+FurnaceRecipes:
+   TotalRecipes: 2
+   
+   1: 
+      Input: "gold ingot"
+      Output:
+         Name: "&3Furnace Recipe 1"
+         Type: "Book"
+         Enchants: {}
+         Amount: 1
+   2:
+      Input: "iron ingot"
+      Output:
+         Name: "&7IDK"
+         Type: "chest"
+         Enchants: 
+            - "KnockBack:20"
+         Amount: 1

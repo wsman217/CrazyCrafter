@@ -1,0 +1,37 @@
+ShapedRecipes:
+   #Amount of recipes you are adding
+   TotalRecipes: 2
+   
+   #The id associated with this recipe, make sure that it is in order of 1-your TotalRecipes
+   1:
+      #Crafting grid
+      # 1 2 3
+      # 4 5 6
+      # 7 8 9
+      
+      #You do not have to have all of the numbers for the recipe to work
+      5: "oak wood"
+      9: "oak wood"
+      
+      #This is where you specify what the crafting recipe will make and the amount
+      Output:
+         #The name of the item
+         Name: "&5Dirty Dirt"
+         #Enchants and their level
+         Enchants:
+            - "Knockback:10"
+            - "FireAspect:5"
+         #Type is what is given
+         Type: "dirt"
+         #This is obvious but it is the amount of what item will be given, can not be over 64
+         Amount: 6
+         
+   2:
+      1: "cobblestone"
+      5: "cobblestone"
+      
+      Output:
+         Name: "&4The Cobble Stick"
+         Enchants: {}
+         Type: "stick"
+         Amount: 1
