@@ -1,0 +1,41 @@
+FurnaceRecipes:
+   TotalRecipes: 2
+   
+   1: 
+      Input: 
+         #At the moment the input does not check for the name or enchants or lore before allowing player to craft the output
+         #This will hopefully come in a later update
+         
+         #Even though it does not check for it yet each of the name, enchants, and lore fields are required to help you in
+         #the future to update and I had already implemented the reading of each of the fields and it should return an error if 
+         #they do not exist
+         Name: "Magic Gold"
+         Material: "gold ingot"
+         Enchants: {}
+         Lore:
+            - "A magical ingot"
+      Output:
+         Name: "&3Furnace Recipe 1"
+         Material: "Book"
+         Enchants: {}
+         Amount: 1
+         Lore:
+            - "A magic book"
+            - "With magic powers"
+      Experience: 100
+      #This is in ticks so 20 ticks = 1 second
+      CookingTime: 20
+   2:
+      Input: 
+         Name: "iron ingot"
+         Material: "iron ingot"
+         Enchants: {}
+         Lore: {}
+      Output:
+         Name: "&7IDK"
+         Material: "chest"
+         Enchants: 
+            - "Knockback:20"
+         Amount: 1
+         Lore: {}
+         

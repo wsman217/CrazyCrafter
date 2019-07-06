@@ -1,0 +1,39 @@
+#At the moment the input does not check for the name or enchants or lore before allowing player to craft the output
+#This will hopefully come in a later update
+
+ShapelessRecipes:
+   #Amount of recipes you are adding
+   TotalRecipes: 1
+   
+   #The id associated with this recipe, make sure that it is in order of 1 all the way through your TotalRecipes
+   #So for the example it is 1-2
+   1:
+      Input:
+         #The list associates with the names of the next fields so inside the List there is cobblestone the name of one of the
+         #new fields will be cobblestone.
+         List: 
+            - "cobblestone"
+            - "flint"
+         #These are the items you listed about make sure to name them exactly the same
+         #The total amount can not be more than 9
+         cobblestone: 
+            Name: "Cobble"
+            Type: "Cobblestone"
+            Enchants: {}
+            Lore: {}
+            #This means there will be 5 pieces of cobblestone in this recipe
+            Amount: 5
+         flint:
+            Name: "Flint"
+            Type: "flint"
+            Enchants: {}
+            Lore: {}
+            Amount: 4 
+            
+      Output:
+         Name: "&9Lighter"
+         Type: "Flint and steel"
+         Enchants:
+            - "Knockback:10"
+         Lore: {}
+         Amount: 1

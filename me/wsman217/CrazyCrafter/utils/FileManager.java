@@ -1,8 +1,4 @@
-package me.wsman217.CrazyCrafter;
-
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
+package me.wsman217.CrazyCrafter.utils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -10,6 +6,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
+
+import me.wsman217.CrazyCrafter.CrazyCrafter;
 
 public class FileManager {
 	
@@ -32,7 +35,7 @@ public class FileManager {
 	 * Sets up the plugin and loads all necessary files.
 	 * @param plugin The plugin this is getting loading for.
 	 */
-	public void setup(Plugin plugin) {
+	public FileManager setup(Plugin plugin) {
 		prefix = "[" + plugin.getName() + "] ";
 		this.plugin = plugin;
 		if(!plugin.getDataFolder().exists()) {
@@ -45,18 +48,10 @@ public class FileManager {
 		//Loads all the normal static files.
 		for(Files file : Files.values()) {
 			File newFile = new File(plugin.getDataFolder(), file.getFileLocation());
-			System.out.println(newFile);
 			if(log) System.out.println(prefix + "Loading the " + file.getFileName());
 			if(!newFile.exists()) {
 				try {
-					File serverFile = new File(plugin.getDataFolder(), "/" + file.getFileLocation());
-					InputStream jarFile = getClass().getResourceAsStream("resources/" + file.getFileLocation());
-					
-					System.out.println(file.getFileLocation());
-					System.out.println("ServerFile: " + serverFile.getPath());
-					System.out.println("JarFile: " + jarFile);
-					
-					copyFile(jarFile, serverFile);
+					IOUtil.saveResource((CrazyCrafter) plugin, file.getFileLocation(), false);
 				}catch(Exception e) {
 					if(log) System.out.println(prefix + "Failed to load " + file.getFileName());
 					e.printStackTrace();
@@ -105,6 +100,7 @@ public class FileManager {
 			}
 			if(log) System.out.println(prefix + "Finished loading custom files.");
 		}
+		return this;
 	}
 	
 	public String getPrefix() {
@@ -476,6 +472,44 @@ public class FileManager {
 			return false;
 		}
 		
+	}
+	
+	public static class IOUtil {
+		public static void saveResource(CrazyCrafter m, String resourcePath, boolean replace) {
+		    if (resourcePath != null && !resourcePath.equals("")) {
+		      resourcePath = resourcePath.replace('\\', '/');
+		      InputStream in = m.getResource(resourcePath);
+		      if (in == null) {
+		        throw new IllegalArgumentException("The embedded resource \'" + resourcePath + "\' cannot be found");
+		      } else {
+		        File outFile = new File(m.getDataFolder(), resourcePath);
+		        int lastIndex = resourcePath.lastIndexOf(47);
+		        File outDir = new File(m.getDataFolder(), resourcePath.substring(0, lastIndex >= 0 ? lastIndex : 0));
+		        if (!outDir.exists()) {
+		          outDir.mkdirs();
+		        }
+		        try {
+		          if (outFile.exists() && !replace) {
+		            m.getLogger().log(Level.WARNING, "Could not save " + outFile.getName() + " to " + outFile + " because " + outFile.getName() + " already exists.");
+		          } else {
+		            FileOutputStream ex = new FileOutputStream(outFile);
+		            byte[] buf = new byte[1024];
+		            int len;
+		            while ((len = in.read(buf)) > 0) {
+		              ex.write(buf, 0, len);
+		            }
+		            ex.close();
+		            in.close();
+		          }
+		        } catch (IOException var10) {
+		          m.getLogger().log(Level.SEVERE, "Could not save " + outFile.getName() + " to " + outFile, var10);
+		        }
+
+		      }
+		    } else {
+		      throw new IllegalArgumentException("ResourcePath cannot be null or empty");
+		    }
+		  }
 	}
 	
 }
