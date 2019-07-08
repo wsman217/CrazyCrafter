@@ -13,8 +13,6 @@ public class DebugCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		
 		new ViewRecipesGUI().openGUI((Player)sender);
-		//This is to test git
 		return true;
 	}
-
 }
