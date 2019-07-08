@@ -19,8 +19,21 @@ public class MainGUI implements Listener {
 
 	private int page = 0;
 	private ArrayList<ItemStack> bottomRow = new ArrayList<ItemStack>();
+	private ItemStack previous = createItem(ChatColor.BLUE + "Previous Page", null, Tools.getSkull(
+			"http://textures.minecraft.net/texture/dcec807dcc1436334fd4dc9ab349342f6c52c9e7b2bf346712db72a0d6d7a4"));
+	private ItemStack placeholder = createItem(" ", null, Material.GRAY_STAINED_GLASS_PANE);
+	private ItemStack cancel = createItem(ChatColor.DARK_RED + "Cancel", null, Material.BARRIER);
+	private ItemStack next = createItem(ChatColor.BLUE + "Next Page", null, Tools.getSkull(
+			"http://textures.minecraft.net/texture/e01c7b5726178974b3b3a01b42a590e54366026fd43808f2a787648843a7f5a"));
+	
+	public MainGUI() {
+		bottomRow.add(previous);
+		bottomRow.add(placeholder);
+		bottomRow.add(cancel);
+		bottomRow.add(next);
+	}
 
-	public void createGUI(Player p) {
+	public void openGUI(Player p) {
 		Inventory gui = Bukkit.createInventory(null, 54, ChatColor.LIGHT_PURPLE + "Edit or Create New Recipes");
 
 		gui = makeBottomRow(gui);
@@ -30,18 +43,6 @@ public class MainGUI implements Listener {
 	}
 
 	private Inventory makeBottomRow(Inventory gui) {
-
-		ItemStack previous = createItem(ChatColor.BLUE + "Previous Page", null, Tools.getSkull(
-				"http://textures.minecraft.net/texture/dcec807dcc1436334fd4dc9ab349342f6c52c9e7b2bf346712db72a0d6d7a4"));
-		ItemStack placeholder = createItem(" ", null, Material.GRAY_STAINED_GLASS_PANE);
-		ItemStack cancel = createItem(ChatColor.DARK_RED + "Cancel", null, Material.BARRIER);
-		ItemStack next = createItem(ChatColor.BLUE + "Next Page", null, Tools.getSkull(
-				"http://textures.minecraft.net/texture/e01c7b5726178974b3b3a01b42a590e54366026fd43808f2a787648843a7f5a"));
-		
-		bottomRow.add(previous);
-		bottomRow.add(placeholder);
-		bottomRow.add(cancel);
-		bottomRow.add(next);
 
 		if (page != 1)
 			gui.setItem(45, previous);
@@ -58,7 +59,7 @@ public class MainGUI implements Listener {
 			gui.setItem(53, next);
 		else
 			gui.setItem(53, placeholder);
-		
+
 		return gui;
 	}
 
@@ -106,19 +107,30 @@ public class MainGUI implements Listener {
 		if (clickedItem == null)
 			return;
 
-		for (ItemStack bottomRow : bottomRow) {
-			if (clickedItem.isSimilar(bottomRow))
-				switch (ChatColor.stripColor(bottomRow.getItemMeta().getDisplayName())) {
-				
+		if (p == null)
+			return;
+		
+		for (ItemStack bottomItems : bottomRow) {
+			if (bottomItems.isSimilar(clickedItem)) {
+				e.setCancelled(true);
+				switch (ChatColor.stripColor(bottomItems.getItemMeta().getDisplayName())) {
 				case " ":
 					break;
 				case "Previous Page":
+					--page;
+					p.closeInventory();
+					openGUI(p);
 					break;
 				case "Next Page":
+					++page;
+					p.closeInventory();
+					openGUI(p);
 					break;
 				case "Cancel":
+					p.closeInventory();
 					break;
 				}
+			}
 		}
 	}
 }

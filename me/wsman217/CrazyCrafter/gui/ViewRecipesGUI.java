@@ -6,58 +6,65 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import me.wsman217.CrazyCrafter.utils.Tools;
 
-//This is the class that controls the gui for only viewing the recipes.
-public class ViewRecipesGUI {
+public class ViewRecipesGUI implements Listener {
 
 	private int page = 0;
+	private ArrayList<ItemStack> bottomRow = new ArrayList<ItemStack>();
+	private ItemStack previous = createItem(ChatColor.BLUE + "Previous Page", null, Tools.getSkull(
+			"http://textures.minecraft.net/texture/dcec807dcc1436334fd4dc9ab349342f6c52c9e7b2bf346712db72a0d6d7a4"));
+	private ItemStack placeholder = createItem(" ", null, Material.GRAY_STAINED_GLASS_PANE);
+	private ItemStack cancel = createItem(ChatColor.DARK_RED + "Cancel", null, Material.BARRIER);
+	private ItemStack next = createItem(ChatColor.BLUE + "Next Page", null, Tools.getSkull(
+			"http://textures.minecraft.net/texture/e01c7b5726178974b3b3a01b42a590e54366026fd43808f2a787648843a7f5a"));
+	
+	public ViewRecipesGUI() {
+		bottomRow.add(previous);
+		bottomRow.add(placeholder);
+		bottomRow.add(cancel);
+		bottomRow.add(next);
+	}
 
 	public void openGUI(Player p) {
 		Inventory gui = Bukkit.createInventory(null, 54,
 				ChatColor.YELLOW + "Custom Recipes " + ChatColor.DARK_GRAY + "(" + page + " / " + countPages() + ")");
 
 		gui = makeBottomRow(gui);
-		
 		gui = loadRecipes(gui);
 
 		p.openInventory(gui);
 	}
 
 	private Inventory makeBottomRow(Inventory gui) {
+
 		if (page != 1)
-			gui.setItem(45, createItem(ChatColor.BLUE + "Previous Page", null, Tools.getSkull(
-					"http://textures.minecraft.net/texture/dcec807dcc1436334fd4dc9ab349342f6c52c9e7b2bf346712db72a0d6d7a4")));
+			gui.setItem(45, previous);
 		else
-			gui.setItem(45, createItem(" ", null, Material.GRAY_STAINED_GLASS_PANE));
-		gui.setItem(46, createItem(" ", null, Material.GRAY_STAINED_GLASS_PANE));
-		
-		//Have crafting whitelist button here?
-		gui.setItem(47, createItem(ChatColor.GRAY + "Crafting Recipes Only", null, Material.CRAFTING_TABLE));
-		
-		//Have all recipes here?
-		gui.setItem(48, createItem(" ", null, Material.GRAY_STAINED_GLASS_PANE));
-		gui.setItem(49, createItem(ChatColor.DARK_RED + "Cancel", null, Material.BARRIER));
-		gui.setItem(50, createItem(" ", null, Material.GRAY_STAINED_GLASS_PANE));
-		
-		//Have furnace whitelist button here?
-		gui.setItem(51, createItem(ChatColor.GRAY + "Furnace Recipes Only", null, Material.FURNACE));
-		gui.setItem(52, createItem(" ", null, Material.GRAY_STAINED_GLASS_PANE));
+			gui.setItem(45, placeholder);
+		gui.setItem(46, placeholder);
+		gui.setItem(47, placeholder);
+		gui.setItem(48, placeholder);
+		gui.setItem(49, cancel);
+		gui.setItem(50, placeholder);
+		gui.setItem(51, placeholder);
+		gui.setItem(52, placeholder);
 		if (countPages() != page)
-			gui.setItem(53, createItem(ChatColor.BLUE + "Next Page", null, Tools.getSkull(
-					"http://textures.minecraft.net/texture/e01c7b5726178974b3b3a01b42a590e54366026fd43808f2a787648843a7f5a")));
+			gui.setItem(53, next);
 		else
-			gui.setItem(53, createItem(" ", null, Material.GRAY_STAINED_GLASS_PANE));
+			gui.setItem(53, placeholder);
+
 		return gui;
 	}
 
-	private ItemStack createItem(String name, ArrayList<String> lore, Material type) {
-		ItemStack item = new ItemStack(type);
-
+	private ItemStack createItem(String name, ArrayList<String> lore, ItemStack item) {
 		ItemMeta im = item.getItemMeta();
 
 		im.setDisplayName(name);
@@ -68,7 +75,9 @@ public class ViewRecipesGUI {
 		return item;
 	}
 
-	private ItemStack createItem(String name, ArrayList<String> lore, ItemStack item) {
+	private ItemStack createItem(String name, ArrayList<String> lore, Material type) {
+		ItemStack item = new ItemStack(type);
+
 		ItemMeta im = item.getItemMeta();
 
 		im.setDisplayName(name);
@@ -85,5 +94,44 @@ public class ViewRecipesGUI {
 
 	private int countPages() {
 		return 2;
+	}
+
+	@EventHandler
+	public void onClickEvent(InventoryClickEvent e) {
+		Inventory inv = e.getClickedInventory();
+		ItemStack clickedItem = e.getCurrentItem();
+		Player p = (Player) e.getWhoClicked();
+
+		if (inv == null)
+			return;
+
+		if (clickedItem == null)
+			return;
+
+		if (p == null)
+			return;
+		
+		for (ItemStack bottomItems : bottomRow) {
+			if (bottomItems.isSimilar(clickedItem)) {
+				e.setCancelled(true);
+				switch (ChatColor.stripColor(bottomItems.getItemMeta().getDisplayName())) {
+				case " ":
+					break;
+				case "Previous Page":
+					--page;
+					p.closeInventory();
+					openGUI(p);
+					break;
+				case "Next Page":
+					++page;
+					p.closeInventory();
+					openGUI(p);
+					break;
+				case "Cancel":
+					p.closeInventory();
+					break;
+				}
+			}
+		}
 	}
 }
