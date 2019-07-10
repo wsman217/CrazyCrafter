@@ -3,10 +3,10 @@ package me.wsman217.CrazyCrafter;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import me.wsman217.CrazyCrafter.commands.CrazyCrafterEdit;
 import me.wsman217.CrazyCrafter.commands.DebugCommand;
 import me.wsman217.CrazyCrafter.customRecipes.FurnaceRecipes;
 import me.wsman217.CrazyCrafter.gui.CreateFurnaceRecipeGUI;
-import me.wsman217.CrazyCrafter.gui.MainGUI;
 import me.wsman217.CrazyCrafter.gui.ViewRecipesGUI;
 import me.wsman217.CrazyCrafter.utils.FileManager;
 import me.wsman217.CrazyCrafter.utils.Tools;
@@ -35,11 +35,11 @@ public class CrazyCrafter extends JavaPlugin {
 
 		new Metrics(this);
 		
-		new FurnaceRecipes().init();;
+		//new FurnaceRecipes().init();;
 		
 		getCommand("ccdebug").setExecutor(new DebugCommand());
+		getCommand("ccedit").setExecutor(new CrazyCrafterEdit());
 		
-		getServer().getPluginManager().registerEvents(new CreateFurnaceRecipeGUI(), this);
 		registerEvents();
 	}
 
@@ -50,8 +50,7 @@ public class CrazyCrafter extends JavaPlugin {
 	
 	private void registerEvents() {
 		PluginManager pman = getServer().getPluginManager();
-		pman.registerEvents(new MainGUI(), this);
-		pman.registerEvents(new ViewRecipesGUI(), this);
+		pman.registerEvents(new CreateFurnaceRecipeGUI(), this);
 	}
 
 	public static CrazyCrafter getInstance() {

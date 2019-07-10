@@ -13,11 +13,15 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import me.wsman217.CrazyCrafter.CrazyCrafter;
 import me.wsman217.CrazyCrafter.utils.Tools;
 
 public class ViewRecipesGUI implements Listener {
 
 	private int page = 0;
+	
+	private CrazyCrafter plugin = CrazyCrafter.getInstance();
+
 	private ArrayList<ItemStack> bottomRow = new ArrayList<ItemStack>();
 	private ItemStack previous = createItem(ChatColor.BLUE + "Previous Page", null, Tools.getSkull(
 			"http://textures.minecraft.net/texture/dcec807dcc1436334fd4dc9ab349342f6c52c9e7b2bf346712db72a0d6d7a4"));
@@ -27,6 +31,8 @@ public class ViewRecipesGUI implements Listener {
 			"http://textures.minecraft.net/texture/e01c7b5726178974b3b3a01b42a590e54366026fd43808f2a787648843a7f5a"));
 	
 	public ViewRecipesGUI() {
+		plugin.getServer().getPluginManager().registerEvents(this, plugin);
+
 		bottomRow.add(previous);
 		bottomRow.add(placeholder);
 		bottomRow.add(cancel);
@@ -101,10 +107,13 @@ public class ViewRecipesGUI implements Listener {
 		Inventory inv = e.getClickedInventory();
 		ItemStack clickedItem = e.getCurrentItem();
 		Player p = (Player) e.getWhoClicked();
-
+		
 		if (inv == null)
 			return;
 
+		if (!inv.getName().equalsIgnoreCase(ChatColor.YELLOW + "Custom Recipes " + ChatColor.DARK_GRAY + "(" + page + " / " + countPages() + ")"))
+			return;
+		
 		if (clickedItem == null)
 			return;
 

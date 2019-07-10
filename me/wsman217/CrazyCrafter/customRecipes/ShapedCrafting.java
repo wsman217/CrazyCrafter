@@ -15,7 +15,7 @@ public class ShapedCrafting {
 	private final String path = "ShapedRecipes.";
 	
 	private CrazyCrafter plugin = CrazyCrafter.getInstance();
-	private FileConfiguration shapedConfig = plugin.getFileManager().getFile(FileManager.Files.SHAPED);
+	private FileConfiguration shapedConfig = plugin.getFileManager().getFile(FileManager.Files.RECIPES);
 	private Logger logger = plugin.getLogger();
 	
 	private int amountOfRecipes;

@@ -294,9 +294,7 @@ public class FileManager {
 		
 		//ENUM_NAME("FileName.yml", "FilePath.yml"),
 		CONFIG("config.yml", "config.yml"),
-		FURNACE("FurncaceRecipes.yml", "Recipes/FurnaceRecipes.yml"),
-		SHAPED("ShapedRecipes.yml", "Recipes/ShapedRecipes.yml"),
-		SHAPELESS("ShapelessRecipes.yml", "Recipes/ShapelessRecipes.yml");
+		RECIPES("recipes.yml", "recipes.yml");
 		
 		private String fileName;
 		private String fileLocation;

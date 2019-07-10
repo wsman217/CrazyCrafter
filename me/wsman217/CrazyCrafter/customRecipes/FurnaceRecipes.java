@@ -18,7 +18,7 @@ public class FurnaceRecipes {
 
 	private final String path = "FurnaceRecipes.";
 	private final CrazyCrafter plugin = CrazyCrafter.getInstance();
-	private final FileConfiguration furnaceConfig = plugin.getFileManager().getFile(FileManager.Files.FURNACE);
+	private final FileConfiguration furnaceConfig = plugin.getFileManager().getFile(FileManager.Files.RECIPES);
 
 	private int amountOfRecipes;
 

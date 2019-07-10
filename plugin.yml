@@ -7,3 +7,6 @@ commands:
    ccdebug:
       description: "Basic referal command"
       usage: /debug
+   ccedit:
+      description: "Edit"
+      usage: /ccedit
