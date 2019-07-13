@@ -25,17 +25,17 @@ public class MainGUI implements Listener {
 
 	private CrazyCrafter plugin = CrazyCrafter.getInstance();
 
-	private ItemStack previous = createItem(ChatColor.BLUE + "Previous Page", null, Tools.getSkull(
+	private ItemStack previous = Tools.createItem(ChatColor.BLUE + "Previous Page", null, Tools.getSkull(
 			"http://textures.minecraft.net/texture/dcec807dcc1436334fd4dc9ab349342f6c52c9e7b2bf346712db72a0d6d7a4"));
-	private ItemStack placeholder = createItem(" ", null, Material.GRAY_STAINED_GLASS_PANE);
-	private ItemStack cancel = createItem(ChatColor.DARK_RED + "Cancel", null, Material.BARRIER);
-	private ItemStack next = createItem(ChatColor.BLUE + "Next Page", null, Tools.getSkull(
+	private ItemStack placeholder = Tools.createItem(" ", null, Material.GRAY_STAINED_GLASS_PANE);
+	private ItemStack cancel = Tools.createItem(ChatColor.DARK_RED + "Cancel", null, Material.BARRIER);
+	private ItemStack next = Tools.createItem(ChatColor.BLUE + "Next Page", null, Tools.getSkull(
 			"http://textures.minecraft.net/texture/e01c7b5726178974b3b3a01b42a590e54366026fd43808f2a787648843a7f5a"));
-	private ItemStack createShaped = createItem(ChatColor.YELLOW + "Create new shaped recipe.", null,
+	private ItemStack createShaped = Tools.createItem(ChatColor.YELLOW + "Create new shaped recipe.", null,
 			Material.CRAFTING_TABLE);
-	private ItemStack createShapeless = createItem(ChatColor.GOLD + "Create new shapeless recipe.", null,
+	private ItemStack createShapeless = Tools.createItem(ChatColor.GOLD + "Create new shapeless recipe.", null,
 			Material.OAK_PLANKS);
-	private ItemStack createFurnace = createItem(ChatColor.GREEN + "Create new furnace recipe.", null,
+	private ItemStack createFurnace = Tools.createItem(ChatColor.GREEN + "Create new furnace recipe.", null,
 			Material.FURNACE);
 
 	private String title = ChatColor.LIGHT_PURPLE + "Edit or Create New Recipes";
@@ -80,30 +80,6 @@ public class MainGUI implements Listener {
 			gui.setItem(53, placeholder);
 
 		return gui;
-	}
-
-	private ItemStack createItem(String name, ArrayList<String> lore, ItemStack item) {
-		ItemMeta im = item.getItemMeta();
-
-		im.setDisplayName(name);
-		im.setLore(lore);
-
-		item.setItemMeta(im);
-
-		return item;
-	}
-
-	private ItemStack createItem(String name, ArrayList<String> lore, Material type) {
-		ItemStack item = new ItemStack(type);
-
-		ItemMeta im = item.getItemMeta();
-
-		im.setDisplayName(name);
-		im.setLore(lore);
-
-		item.setItemMeta(im);
-
-		return item;
 	}
 
 	private Inventory loadRecipes(Inventory gui) {

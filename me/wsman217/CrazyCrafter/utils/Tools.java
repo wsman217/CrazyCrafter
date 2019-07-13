@@ -117,4 +117,28 @@ public class Tools {
         skull.setItemMeta(skullMeta);
         return skull;
     }
+	
+	public static ItemStack createItem(String name, ArrayList<String> lore, ItemStack item) {
+		ItemMeta im = item.getItemMeta();
+
+		im.setDisplayName(name);
+		im.setLore(lore);
+
+		item.setItemMeta(im);
+
+		return item;
+	}
+
+	public static ItemStack createItem(String name, ArrayList<String> lore, Material type) {
+		ItemStack item = new ItemStack(type);
+
+		ItemMeta im = item.getItemMeta();
+
+		im.setDisplayName(name);
+		im.setLore(lore);
+
+		item.setItemMeta(im);
+
+		return item;
+	}
 }
